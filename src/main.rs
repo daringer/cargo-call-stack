@@ -672,6 +672,17 @@ fn run() -> anyhow::Result<i32> {
                         || func.starts_with("llvm.usub.with.overflow.")
                         || func.starts_with("llvm.vector.reduce.")
                         || func.starts_with("llvm.x86.sse2.pmovmskb.")
+                        || func.starts_with("llvm.arm.hint")
+                        || func.starts_with("llvm.fshl.")
+                        || func.starts_with("llvm.fshr.")
+                        || func.starts_with("llvm.load.relative.")
+                        || func.starts_with("llvm.vector.reduce.")
+                        || func.starts_with("llvm.bitreverse.")
+                        || func.starts_with("llvm.fptoui.sat.")
+                        || func.starts_with("llvm.is.")
+                        || func.starts_with("llvm.smax.")
+                        || func.starts_with("llvm.smin.")
+                        || func.starts_with("llvm.ctpop.")
                         || *func == "llvm.x86.sse2.pause"
                     {
                         if !llvm_seen.contains(func) {
