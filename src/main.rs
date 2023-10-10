@@ -702,7 +702,7 @@ fn run() -> anyhow::Result<i32> {
                     }
 
                     // use canonical name
-                    let callee = if let Some(canon) = aliases.get(func) {
+                   /*  let callee = if let Some(canon) = aliases.get(func) {
                         indices[*canon]
                     } else {
                         assert!(
@@ -719,12 +719,21 @@ fn run() -> anyhow::Result<i32> {
 
                             idx
                         }
-                    };
+                    };*/
+                    if let Some(canon) = aliases.get(func) {
+                        let callee = indices[*canon];
+                        if !callees_seen.contains(&callee) {
+                            callees_seen.insert(callee);
+                            g.add_edge(caller, callee, ());
+                        }
+                    } else {
+                        eprintln!("BUG: callee `{}` is unknown - skipping", func);
+                    }
 
-                    if !callees_seen.contains(&callee) {
+                    /*if !callees_seen.contains(&callee) {
                         callees_seen.insert(callee);
                         g.add_edge(caller, callee, ());
-                    }
+                    }*/
                 }
 
                 Stmt::IndirectCall(sig) => {
