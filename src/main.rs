@@ -738,7 +738,7 @@ fn run() -> anyhow::Result<i32> {
                             g.add_edge(caller, callee, ());
                         }
                     } else {
-                        eprintln!("BUG: callee `{}` is unknown - skipping", func);
+                        warn!("BUG: callee `{}` is unknown - skipping", func);
                     }
 
                     /*if !callees_seen.contains(&callee) {
@@ -868,23 +868,18 @@ fn run() -> anyhow::Result<i32> {
                         } else {
                             // in all other cases our results should match
 
-                            assert_eq!(
-                                *llvm_stack, stack,
-                                "BUG: LLVM reported that `{}` uses {} bytes of stack but \
-                                 this doesn't match our analysis",
-                                canonical_name, llvm_stack
-                            );
+                            if *llvm_stack != stack {
+                                warn!("BUG: LLVM reported that `{}` uses {} ({}) bytes of stack but \
+                                 this doesn't match our analysis - overriding with our data",
+                                canonical_name, llvm_stack, stack);
+                            }
+                            *llvm_stack = stack;
                         }
                     }
 
-                    assert_eq!(
-                        *llvm_stack != 0,
-                        modifies_sp,
-                        "BUG: LLVM reported that `{}` uses {} bytes of stack but this doesn't \
-                         match our analysis",
-                        canonical_name,
-                        *llvm_stack
-                    );
+                    if (*llvm_stack != 0) != modifies_sp {
+                        warn!("BUG: sp was modified, but *llvm_stack: {}", *llvm_stack);
+                    }
                 } else if let Some(stack) = our_stack {
                     g[caller].local = Local::Exact(stack);
                 } else if !modifies_sp {

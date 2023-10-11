@@ -1,3 +1,5 @@
+use crate::warn;
+
 /// Analyzes a subroutine and returns all the `BL` and `B` instructions in it, plus whether this
 /// function performs an indirect function call or not
 // NOTE we assume that `bytes` is always valid input so all errors are bugs
@@ -57,12 +59,10 @@ pub fn analyze(
                 // start of a data section
 
                 if let Some(tag) = tags.get(needle + 1) {
-                    assert_eq!(
-                        tag.1,
-                        Tag::Thumb,
-                        "BUG: expected a thumb tag at {:#10x} but found another data tag",
-                        tag.0
-                    );
+                   if tag.1 != Tag::Thumb {
+                        warn!("BUG: expected a thumb tag at {:#10x} but found another data tag",
+                        tag.0);
+                   }
 
                     // skip the data section
                     let end = tag.0;
