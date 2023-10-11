@@ -65,8 +65,7 @@ dependencies = [
 [[package]]
 name = "cargo-project"
 version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "79735d9ce96f5bae702c3776b74d46a883601abe11809da242c4e3b7cef96af0"
+source = "git+https://github.com/daringer/cargo-project?branch=staging#abecdd7688514c594ce8d58f8e4a4b074c4db0a3"
 dependencies = [
  "glob",
  "log",

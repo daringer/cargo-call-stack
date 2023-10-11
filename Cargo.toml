@@ -28,7 +28,8 @@ rustc_version = "0.4.0"
 stack-sizes = "0.5.0"
 walkdir = "2.3.2"
 xmas-elf = "0.9.0"
-proc-macro2 = "1.0.43" 
+proc-macro2 = "1.0.43"
 
 [patch.crates-io]
 proc-macro2 = { git = "https://github.com/dtolnay/proc-macro2.git", tag = "1.0.43"}
+cargo-project = { git = "https://github.com/daringer/cargo-project", branch = "staging"}
